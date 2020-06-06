@@ -40,6 +40,25 @@ def getFFs(friends):
     return ans
 
 
+def reccomendFriend(start_uid, friends, ffs):
+    set_ffs = set()
+    #set of friends friends that are not in your friendlist
+    for friend_arr in ffs:
+        for ff in friend_arr:
+            if ff not in set_ffs and ff not in friends:
+                set_ffs.add(ff)
+    counter = []
+    print()
+    for ff in set_ffs:
+        cnt = 0
+        for friend_arr in ffs:
+            if ff in friend_arr:
+                cnt += 1
+        counter.append([ff, cnt])
+    print(counter)
+
+
+
 token = open('token.txt')
 for line in token:
     token = line
@@ -55,7 +74,8 @@ f = 'deactivated,country,city,career,education,occupation,schools'
 start_node = vk_api.users.get(user_id=start_uid, fields=f)
 
 lvl_1 = vk_api.friends.get(user_id=start_uid, order='hints')
-print(len(getFFs(lvl_1)))
+ffs = getFFs(lvl_1)
+reccomendFriend(start_uid, lvl_1, ffs)
 
 # for uid in lvl_1['items']:
 #     lvl_2.append(vk_api.friends.get(user_ids=uid, order='hints'))
