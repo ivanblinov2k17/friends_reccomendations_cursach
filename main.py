@@ -13,13 +13,13 @@ def getFFs(friends):
     while cnt < friends['count']:
         code = '''
                 var friends = ''' + str(friends['items']) + ''';
-                var members;
+                var members = [];
                 var cnt = 0;
                 var requests = '''+str(cnt)+''';
                 var ret = [];
                 while (cnt<25 && requests<'''+str(friends['count']) + ''') {
                     members = API.friends.get({"user_id": friends[requests]});
-                    ret = ret + members.items;
+                    ret.push(members.items);
                     cnt = cnt+1;
                     requests = requests + 1;
                 }
@@ -33,7 +33,11 @@ def getFFs(friends):
         cnt += 25
         members.append(req.json()['response'])
         time.sleep(0.33)
-    return members
+    ans = []
+    for group in members:
+        for member in group:
+            ans.append(member)
+    return ans
 
 
 token = open('token.txt')
